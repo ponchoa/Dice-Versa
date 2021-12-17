@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: bb5984ae2e2aed94f8f5559e7edbfdb8
+guid: 5bc5855edc7460c4793c21acdb448647
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -35,8 +35,8 @@ TextureImporter:
     filterMode: 0
     aniso: 2
     mipBias: -100
-    wrapU: 0
-    wrapV: 0
+    wrapU: 1
+    wrapV: 1
     wrapW: 0
   nPOTScale: 0
   lightmap: 0
@@ -113,7 +113,7 @@ TextureImporter:
     buildTarget: Windows Store Apps
     maxTextureSize: 8192
     resizeAlgorithm: 0
-    textureFormat: 4
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0

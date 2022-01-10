@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class FaceUI : MonoBehaviour, IPointerClickHandler
+public class FaceUI : MonoBehaviour, IPointerClickHandler, IScrollHandler
 {
     [SerializeField]
     private DieFace face;
@@ -15,17 +15,22 @@ public class FaceUI : MonoBehaviour, IPointerClickHandler
 
     [Range(0, 9)]
     public int numberOfPips = 0;
+    [Range(0, 15)]
+    public int faceID = 0;
 
     private Image pipsImage;
+    private Image faceImage;
     private Image backImage;
 
     public Sprite[] pipSprites;
+    public Sprite[] faceSprites;
 
     private void Start()
     {
-        if (transform.childCount > 0)
+        if (transform.childCount > 1)
         {
-            pipsImage = transform.GetChild(0).GetComponent<Image>();
+            faceImage = transform.GetChild(0).GetComponent<Image>();
+            pipsImage = transform.GetChild(1).GetComponent<Image>();
         }
         backImage = GetComponent<Image>();
     }
@@ -37,6 +42,10 @@ public class FaceUI : MonoBehaviour, IPointerClickHandler
             if (pipsImage)
             {
                 pipsImage.color = new Color(1f, 1f, 1f, 0f);
+            }
+            if (faceImage)
+            {
+                faceImage.color = new Color(1f, 1f, 1f, 0f);
             }
             if (backImage)
             {
@@ -57,6 +66,12 @@ public class FaceUI : MonoBehaviour, IPointerClickHandler
                 {
                     pipsImage.color = new Color(1f, 1f, 1f, 0f);
                 }
+            }
+            if (faceImage)
+            {
+                faceImage.color = new Color(1f, 1f, 1f, 1f);
+                faceImage.sprite = faceSprites[faceID];
+
             }
             if (backImage)
             {
@@ -95,5 +110,22 @@ public class FaceUI : MonoBehaviour, IPointerClickHandler
     public void SetFace(DieFace newFace)
     {
         face = newFace;
+    }
+
+    public void OnScroll(PointerEventData eventData)
+    {
+        if (face == DieFace.NONE)
+            return;
+        if (eventData.scrollDelta.y > 0f)
+        {
+            faceID++;
+        }
+        else if (eventData.scrollDelta.y < 0f)
+        {
+            faceID--;
+        }
+        faceID += 16;
+        faceID %= 16;
+        dieUI.physDie[(int)face].faceID = faceID;
     }
 }

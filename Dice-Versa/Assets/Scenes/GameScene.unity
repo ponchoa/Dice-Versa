@@ -1180,6 +1180,7 @@ MonoBehaviour:
   raycastMask:
     serializedVersion: 2
     m_Bits: 256
+  dieEditPanel: {fileID: 1590436672}
   testDies:
   - {fileID: 69636142}
   - {fileID: 1986832338}
@@ -1353,7 +1354,7 @@ GameObject:
   - component: {fileID: 1590436674}
   - component: {fileID: 1590436673}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: DieEditPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1620,6 +1621,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1590436672}
     m_Modifications:
+    - target: {fileID: 6129702569512154288, guid: b2bf8265a7c04814e8d184fff42c4e12, type: 3}
+      propertyPath: containerPanel
+      value: 
+      objectReference: {fileID: 1590436672}
     - target: {fileID: 6129702569512154290, guid: b2bf8265a7c04814e8d184fff42c4e12, type: 3}
       propertyPath: m_Name
       value: DieUi

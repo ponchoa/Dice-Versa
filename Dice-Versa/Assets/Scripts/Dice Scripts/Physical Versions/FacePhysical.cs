@@ -10,6 +10,8 @@ public class FacePhysical : MonoBehaviour
 
     [Range(0, 9)]
     public int numberOfPips = 0;
+    [Range(0, 15)]
+    public int faceID = 0;
 
     private Renderer rend;
 
@@ -23,6 +25,7 @@ public class FacePhysical : MonoBehaviour
         if (rend)
         {
             rend.material.SetFloat("_NumberOfPips", numberOfPips);
+            rend.material.SetFloat("_FaceID", faceID);
         }
     }
 }

@@ -20,6 +20,26 @@ public enum HeroClass
     MAGE = 2
 }
 
+public enum FaceType
+{
+    ATTACK = 0,
+    DEFEND = 1,
+    HEAL = 2,
+    RANGED = 3,
+    FIRE = 4,
+    PLASMA = 5,
+    REGEN = 6,
+    ATKALL = 7,
+    SMOKE = 8,
+    ABSORB = 9,
+    EXTRADIE = 10,
+    KILL = 11,
+    LOOT = 12,
+    REVIVE = 13,
+    POISON = 14,
+    NONE = 15
+}
+
 public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
@@ -44,6 +64,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Settings")]
     public LayerMask raycastMask;
+
+    [Header("UI Elements")]
+    public Transform dieEditPanel;
 
     [Header("Debug Values")]
     public List<DiePhysical> testDies;
@@ -77,12 +100,24 @@ public class GameManager : MonoBehaviour
                 }
                 return;
             }
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (dieEditPanel != null)
+                {
+                    dieUI.DisplayDie(null);
+                    dieEditPanel.gameObject.SetActive(false);
+                }
+            }
             if (Input.GetMouseButtonDown(0))
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit, 10f, raycastMask))
                 {
+                    if (dieEditPanel != null)
+                    {
+                        dieEditPanel.gameObject.SetActive(true);
+                    }
                     DiePhysical die = hit.transform.GetComponent<DiePhysical>();
                     if (die && dieUI)
                     {

@@ -8,6 +8,7 @@ public class DieUI : MonoBehaviour
     private FaceUI[,] faces;
     [HideInInspector]
     public DiePhysical physDie;
+    public Transform containerPanel;
 
     private void Start()
     {
@@ -20,19 +21,37 @@ public class DieUI : MonoBehaviour
                 faces[x, y].dieUI = this;
             }
         }
+        if (containerPanel != null)
+        {
+            containerPanel.gameObject.SetActive(false);
+        }
     }
 
     public void DisplayDie(DiePhysical die)
     {
         physDie = die;
-        for (int x = 0; x < 4; x++)
+        if (die != null)
         {
-            for (int y = 0; y < 3; y++)
+            for (int x = 0; x < 4; x++)
             {
-                faces[x, y].SetFace(physDie.layout[x, y]);
-                if (faces[x, y].Face != DieFace.NONE)
+                for (int y = 0; y < 3; y++)
                 {
-                    faces[x, y].numberOfPips = physDie[(int)faces[x, y].Face].numberOfPips;
+                    faces[x, y].SetFace(physDie.layout[x, y]);
+                    if (faces[x, y].Face != DieFace.NONE)
+                    {
+                        faces[x, y].numberOfPips = physDie[(int)faces[x, y].Face].numberOfPips;
+                        faces[x, y].faceID = physDie[(int)faces[x, y].Face].faceID;
+                    }
+                }
+            }
+        }
+        else
+        {
+            for (int x = 0; x < 4; x++)
+            {
+                for (int y = 0; y < 3; y++)
+                {
+                    faces[x, y].SetFace(DieFace.NONE);
                 }
             }
         }

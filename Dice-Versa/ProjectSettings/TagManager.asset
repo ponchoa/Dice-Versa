@@ -44,3 +44,6 @@ TagManager:
   - name: HUD
     uniqueID: 1843190811
     locked: 0
+  - name: HUDPips
+    uniqueID: 745643945
+    locked: 0

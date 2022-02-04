@@ -7,13 +7,10 @@ public class DiePhysical : MonoBehaviour
 {
     private bool isRolling = false;
     private Rigidbody rb;
-    private DieFace currentFace = DieFace.TOP;
     private FacePhysical[] faces;
 
-    public DieFace CurrentFace
-    {
-        get { return currentFace; }
-    }
+    public DieFace CurrentFace { get; private set; } = DieFace.TOP;
+
     public FacePhysical this[int i]
     {
         get { return faces[i]; }
@@ -41,8 +38,8 @@ public class DiePhysical : MonoBehaviour
             isRolling = true;
         if (isRolling)
         {
-            currentFace = RollUpdate();
-            if (currentFace != DieFace.NONE)
+            CurrentFace = RollUpdate();
+            if (CurrentFace != DieFace.NONE)
             {
                 isRolling = false;
                 //print(currentFace);

@@ -8,7 +8,6 @@ public class DieUI : MonoBehaviour
     private FaceUI[,] faces;
     [HideInInspector]
     public DiePhysical physDie;
-    public Transform containerPanel;
 
     private void Start()
     {
@@ -20,10 +19,6 @@ public class DieUI : MonoBehaviour
                 faces[x, y] = transform.Find(x + "_" + y).GetComponent<FaceUI>();
                 faces[x, y].dieUI = this;
             }
-        }
-        if (containerPanel != null)
-        {
-            containerPanel.gameObject.SetActive(false);
         }
     }
 

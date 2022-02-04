@@ -40,6 +40,20 @@ public enum FaceType
     NONE = 15
 }
 
+public enum GameState
+{
+    MENU_MAIN,
+    MENU_GAME,
+    MENU_DICE,
+    FIGHT_ROLL,
+    FIGHT_ACT,
+    FIGHT_ENEMIES,
+    MAP_CHOICE,
+    MAP_EVENT,
+    MAP_SHOP,
+    MAP_SMITH
+}
+
 public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
@@ -87,46 +101,39 @@ public class GameManager : MonoBehaviour
             return true;
         }
     }
+    public GameState CurrentState { get; private set; } = GameState.MENU_MAIN;
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
 
     private void Update()
     {
-        if (CanRoll)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                foreach (DiePhysical die in testDies)
-                {
-                    die.RollDie();
-                }
-                return;
-            }
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                if (dieEditPanel != null)
-                {
-                    dieUI.DisplayDie(null);
-                    dieEditPanel.gameObject.SetActive(false);
-                }
-            }
-            if (Input.GetMouseButtonDown(0))
-            {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, 10f, raycastMask))
-                {
-                    if (dieEditPanel != null)
-                    {
-                        dieEditPanel.gameObject.SetActive(true);
-                    }
-                    DiePhysical die = hit.transform.GetComponent<DiePhysical>();
-                    if (die && dieUI)
-                    {
-                        dieUI.DisplayDie(die);
-                    }
-                }
-            }
-        }
+        
     }
+
+    #region States
+    public void ChangeState(GameState newState)
+    {
+        if (newState == CurrentState)
+            return;
+
+        CurrentStateExit(newState);
+        GameState prevState = CurrentState;
+        CurrentState = newState;
+        CurrentStateEnter(prevState);
+    }
+
+    private void CurrentStateExit(GameState nextState)
+    {
+        //TODO: Add what happens when a state is about to end.
+    }
+    private void CurrentStateEnter(GameState previousState)
+    {
+        //TODO: Add what happens when a state was just started.
+    }
+    #endregion
 
     public DieFace[,] GetBaseLayout(HeroClass heroClass)
     {
@@ -164,6 +171,22 @@ public class GameManager : MonoBehaviour
                 res[1, 2] = DieFace.TOP;
                 res[2, 0] = DieFace.BOTTOM;
                 return res;
+        }
+    }
+    public void SetStartingDie(DiePhysical die, HeroClass heroClass)
+    {
+        //TODO: Create basic layouts for each class.
+
+        switch (heroClass)
+        {
+            case HeroClass.THIEF:
+                die[(int)DieFace.FRONT].faceID = (int)FaceType.ATTACK;
+                break;
+            case HeroClass.MAGE:
+                break;
+            case HeroClass.WARRIOR:
+            default:
+                break;
         }
     }
     public Vector3 GetRandomPosition()

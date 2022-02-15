@@ -89,4 +89,16 @@ public class DiePhysical : MonoBehaviour
 
         return DieFace.NONE;
     }
+
+    public void MoveToPosition(Transform target, bool keepTopFaceUp = true, float moveDuration = .3f)
+    {
+        StartCoroutine(MoveToPositionCoroutine(target, keepTopFaceUp, moveDuration));
+    }
+
+    IEnumerator MoveToPositionCoroutine(Transform target, bool keepTopFaceUp, float moveDuration)
+    {
+        //TODO
+
+        yield return null;
+    }
 }

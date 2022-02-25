@@ -31,6 +31,7 @@ public class DiePhysical : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         layout = GameManager.Instance.GetBaseLayout(heroClass);
+        GameManager.Instance.SetStartingDie(this, heroClass);
     }
     private void Update()
     {

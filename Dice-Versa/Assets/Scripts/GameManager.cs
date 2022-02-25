@@ -42,16 +42,16 @@ public enum FaceType
 
 public enum GameState
 {
-    MENU_MAIN,
-    MENU_GAME,
-    MENU_DICE,
-    FIGHT_ROLL,
-    FIGHT_ACT,
-    FIGHT_ENEMIES,
-    MAP_CHOICE,
-    MAP_EVENT,
-    MAP_SHOP,
-    MAP_SMITH
+    MENU_MAIN = 0,
+    MENU_GAME = 1,
+    MENU_DICE = 2,
+    FIGHT_ROLL = 3,
+    FIGHT_ACT = 4,
+    FIGHT_ENEMIES = 5,
+    MAP_CHOICE = 6,
+    MAP_EVENT = 7,
+    MAP_SHOP = 8,
+    MAP_SMITH = 9
 }
 
 public class GameManager : MonoBehaviour
@@ -102,15 +102,24 @@ public class GameManager : MonoBehaviour
         }
     }
     public GameState CurrentState { get; private set; } = GameState.MENU_MAIN;
+    delegate void UpdateStateDelegate();
+    Dictionary<GameState, UpdateStateDelegate> updateMap;
 
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
+
+        InstantiateUpdateMap();
     }
 
     private void Update()
     {
-        
+        UpdateCurrentState();
+    }
+
+    private void UpdateCurrentState()
+    {
+        updateMap[CurrentState]();
     }
 
     #region States
@@ -133,6 +142,65 @@ public class GameManager : MonoBehaviour
     {
         //TODO: Add what happens when a state was just started.
     }
+
+    private void InstantiateUpdateMap()
+    {
+        updateMap = new Dictionary<GameState, UpdateStateDelegate>();
+
+        updateMap.Add(GameState.MENU_MAIN, MenuMainUpdate);
+        updateMap.Add(GameState.MENU_GAME, MenuGameUpdate);
+        updateMap.Add(GameState.MENU_DICE, MenuDiceUpdate);
+        updateMap.Add(GameState.FIGHT_ROLL, FightRollUpdate);
+        updateMap.Add(GameState.FIGHT_ACT, FightActUpdate);
+        updateMap.Add(GameState.FIGHT_ENEMIES, FightEnemiesUpdate);
+        updateMap.Add(GameState.MAP_CHOICE, MapChoiceUpdate);
+        updateMap.Add(GameState.MAP_EVENT, MapEventUpdate);
+        updateMap.Add(GameState.MAP_SHOP, MapShopUpdate);
+        updateMap.Add(GameState.MAP_SMITH, MapSmithUpdate);
+    }
+
+    #region State Update Methods
+    private void MenuMainUpdate()
+    {
+
+    }
+    private void MenuGameUpdate()
+    {
+
+    }
+    private void MenuDiceUpdate()
+    {
+
+    }
+    private void FightRollUpdate()
+    {
+
+    }
+    private void FightActUpdate()
+    {
+
+    }
+    private void FightEnemiesUpdate()
+    {
+
+    }
+    private void MapChoiceUpdate()
+    {
+
+    }
+    private void MapEventUpdate()
+    {
+
+    }
+    private void MapShopUpdate()
+    {
+
+    }
+    private void MapSmithUpdate()
+    {
+
+    }
+    #endregion
     #endregion
 
     public DieFace[,] GetBaseLayout(HeroClass heroClass)
@@ -175,17 +243,50 @@ public class GameManager : MonoBehaviour
     }
     public void SetStartingDie(DiePhysical die, HeroClass heroClass)
     {
-        //TODO: Create basic layouts for each class.
-
         switch (heroClass)
         {
+            default:
+            case HeroClass.WARRIOR:
+                die[(int)DieFace.FRONT].faceID = (int)FaceType.ATTACK;
+                die[(int)DieFace.FRONT].numberOfPips = 2;
+                die[(int)DieFace.BACK].faceID = (int)FaceType.ATTACK;
+                die[(int)DieFace.BACK].numberOfPips = 2;
+                die[(int)DieFace.LEFT].faceID = (int)FaceType.DEFEND;
+                die[(int)DieFace.LEFT].numberOfPips = 2;
+                die[(int)DieFace.RIGHT].faceID = (int)FaceType.DEFEND;
+                die[(int)DieFace.RIGHT].numberOfPips = 2;
+                die[(int)DieFace.TOP].faceID = (int)FaceType.ATTACK;
+                die[(int)DieFace.TOP].numberOfPips = 1;
+                die[(int)DieFace.BOTTOM].faceID = (int)FaceType.DEFEND;
+                die[(int)DieFace.BOTTOM].numberOfPips = 0;
+                break;
             case HeroClass.THIEF:
                 die[(int)DieFace.FRONT].faceID = (int)FaceType.ATTACK;
+                die[(int)DieFace.FRONT].numberOfPips = 2;
+                die[(int)DieFace.BACK].faceID = (int)FaceType.ATTACK;
+                die[(int)DieFace.BACK].numberOfPips = 1;
+                die[(int)DieFace.LEFT].faceID = (int)FaceType.RANGED;
+                die[(int)DieFace.LEFT].numberOfPips = 1;
+                die[(int)DieFace.RIGHT].faceID = (int)FaceType.RANGED;
+                die[(int)DieFace.RIGHT].numberOfPips = 1;
+                die[(int)DieFace.TOP].faceID = (int)FaceType.LOOT;
+                die[(int)DieFace.TOP].numberOfPips = 1;
+                die[(int)DieFace.BOTTOM].faceID = (int)FaceType.NONE;
+                die[(int)DieFace.BOTTOM].numberOfPips = 0;
                 break;
             case HeroClass.MAGE:
-                break;
-            case HeroClass.WARRIOR:
-            default:
+                die[(int)DieFace.FRONT].faceID = (int)FaceType.FIRE;
+                die[(int)DieFace.FRONT].numberOfPips = 2;
+                die[(int)DieFace.BACK].faceID = (int)FaceType.FIRE;
+                die[(int)DieFace.BACK].numberOfPips = 1;
+                die[(int)DieFace.LEFT].faceID = (int)FaceType.PLASMA;
+                die[(int)DieFace.LEFT].numberOfPips = 2;
+                die[(int)DieFace.RIGHT].faceID = (int)FaceType.NONE;
+                die[(int)DieFace.RIGHT].numberOfPips = 1;
+                die[(int)DieFace.TOP].faceID = (int)FaceType.HEAL;
+                die[(int)DieFace.TOP].numberOfPips = 1;
+                die[(int)DieFace.BOTTOM].faceID = (int)FaceType.NONE;
+                die[(int)DieFace.BOTTOM].numberOfPips = 0;
                 break;
         }
     }
